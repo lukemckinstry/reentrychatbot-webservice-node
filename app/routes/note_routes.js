@@ -38,8 +38,7 @@ module.exports = function(app, db) {
     	2:{seq:2, visited:false, text: "Do you have a government ID?", deactivate:[3]},
     	3:{seq:3, visited:false, text: "Do you have a birth certificate?" },
     	4:{seq:4, visited:false, text: "Do you need behavioral health and substance abuse services?"}
-
-    } ;
+    };
     db.collection('notes').insert(note, (err, result) => {
       if (err) { 
         res.send({ 'error': 'An error has occurred' }); 
@@ -52,6 +51,8 @@ module.exports = function(app, db) {
   app.get('/next/:id', (req, res) => {
     const id = req.params.id;
     const details = { '_id': new ObjectID(id) };
+    console.log( id )
+    console.log( details )
     db.collection('notes').findOne(details, (err, item) => {
       if (err) {
         res.send({'error':'An error has occurred'});
@@ -62,10 +63,20 @@ module.exports = function(app, db) {
   });
 
   app.put('/next/:id', (req, res) => {
+    console.log( "LETS PUT SOMETHING" );
+    
     const id = req.params.id;
     const details = { '_id': new ObjectID(id) };
-    const note = { text: req.body.body, title: req.body.title };
+    console.log( id )
+    console.log( details )
+    console.log( req.body.body );
+
+    const note = { text: req.body.body };
+    console.log(  "made it here");
+    console.log(  note );
     db.collection('notes').update(details, note, (err, result) => {
+      console.log( "result ops" )
+      //console.log( result.ops )
       if (err) {
           res.send({'error':'An error has occurred'});
       } else {
