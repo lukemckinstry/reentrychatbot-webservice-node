@@ -30,15 +30,15 @@ module.exports = function(app, db) {
 
 
   app.post('/next', (req, res) => {
-    const note = {
-    	0:{seq:0,visited:false, text: "Welcome to Reentry ChatBot. Here is how it works: We will" +
-    	" walk you through a series of questions. If at any point you have a question, just" +
-    	" ask and we will try our best to answer. Ready to get started?" },
+    const note = { body: {
+    	0:{seq:0,visited:false, text: "Welcome to Reentry ChatBot Here is how it works: We will" +
+    	" walk you through a series of questions If at any point you have a question, just" +
+    	" ask and we will try our best to answer Ready to get started?" },
     	1:{seq:1, visited:false, text: "Are you looking for information for yourself or somebody else?" },
-    	2:{seq:2, visited:false, text: "Do you have a government ID?", deactivate:[3]},
+    	2:{seq:2, visited:false, text: "Do you have a government ID?" },
     	3:{seq:3, visited:false, text: "Do you have a birth certificate?" },
     	4:{seq:4, visited:false, text: "Do you need behavioral health and substance abuse services?"}
-    };
+    }};
     db.collection('notes').insert(note, (err, result) => {
       if (err) { 
         res.send({ 'error': 'An error has occurred' }); 
@@ -67,17 +67,18 @@ module.exports = function(app, db) {
     
     const id = req.params.id;
     const details = { '_id': new ObjectID(id) };
-    console.log( id )
-    console.log( details )
-    console.log( req.body.body );
-
-    const note = { text: req.body.body };
-    console.log(  "made it here");
-    console.log(  note );
+    //console.dir( req );
+    var putBody = req.body;
+    console.log(  { body: putBody } );
+    const note = { body: putBody };
+    
+    //console.log(  note );
     db.collection('notes').update(details, note, (err, result) => {
       console.log( "result ops" )
       //console.log( result.ops )
       if (err) {
+          console.log("ERROR");
+          console.log( err );
           res.send({'error':'An error has occurred'});
       } else {
           res.send(note);
