@@ -67,7 +67,7 @@ module.exports = function(app, db) {
     
     const id = req.params.id;
     const details = { '_id': new ObjectID(id) };
-    //console.dir( req );
+    console.dir( req );
     var putBody = req.body;
     console.log(  { body: putBody } );
     const note = { body: putBody };
